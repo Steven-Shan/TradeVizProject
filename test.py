@@ -29,7 +29,7 @@ def year_imports():
 # Preparing the Various Values
 # Only useful from 2013 - 2021
     year = input("Enter your desired year: ")
-    URL_base = "https://api.census.gov/data/timeseries/intltrade/imports/hs?get=CON_CIF_YR&time="
+    URL_base = "https://api.census.gov/data/timeseries/intltrade/exports/hs?get=CON_CIF_YR&time="
     api_key = 'a71878ff361ea483f0788b1fe0687beeed9a2c1c'
     time_end = str(year);
     url = URL_base + time_end
@@ -56,10 +56,10 @@ def year_imports():
     plt.plot(months, ind_month_val, marker='X')
     plt.xticks(np.arange(min(months), max(months) + 1, 1.0))  # This is to print out all month values
     plt.title(title_shell)
-    plt.ylabel("Imports (CIF) in billions")
+    plt.ylabel("Exports (CIF) in billions")
     plt.xlabel("Month")
     print(title_shell)  #Print Table Then Show Graph
-    print("month ", "Imports in billions")
+    print("month ", "Exports in billions")
     for x in range(0, 11):
         print(months[x], "    ", ind_month_val[x])
     plt.show()
@@ -97,11 +97,11 @@ def country_imports(countrycode):
             count = count + 1
 
     months_yr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-    title_shell = "US imports from " + country_name + " in " + year +  "- Cumulative and Individual by Month"
+    title_shell = "US exports to " + country_name + " in " + year +  "- value by month"
     plt.plot(months_yr, import_values, marker='X')
     plt.xticks(np.arange(min(months_yr), max(months_yr) + 1, 1.0))  # This is to print out all month values
     plt.title(title_shell)
-    plt.ylabel("Imports (CIF) in billions")
+    plt.ylabel("Exports (FOB) in billions")
     plt.xlabel("Month")
     print(title_shell)  #Print Table Then Show Graph
     print("month ", "Individual Imports", "Cumulative, Imports in ($)bn")
@@ -231,40 +231,82 @@ def country_item_value():
 
 
 def main():
-    master = tkr.Tk()
-    master.geometry("200x100")
-    master.title("Dropdown List")
+    userchoice = input("Do you want a product line (P) or country code (C)? ")
+    if(userchoice == "P"):
+        product_imports()
+        
+    elif(userchoice == "C"):
+        master = tkr.Tk()
+        master.geometry("200x100")
+        master.title("Dropdown List")
 
     
-    tkr.Label(master, text = "Countries").grid(row = 0)
-    clicked = tkr.StringVar()
-    clicked.set("Canada")
-    set1 = tkr.OptionMenu(master, clicked, "Canada", "Mexico", "Japan", "Germany", "China")
+        tkr.Label(master, text = "Countries: 20 Largest Trading Partners").grid(row = 0)
+        clicked = tkr.StringVar()
+        clicked.set("Country List: Choose Desired Country And X-Out")
+        set1 = tkr.OptionMenu(master, clicked, "Canada", "Mexico", "China", "Japan", "Germany",
+                                           "South Korea", "India", "United Kingdom", "France", "Italy", 
+                                           "Taiwan", "Brazil", "Netherlands", "Switzerland", "Ireland",
+                                           "Vietnam", "Malaysia", "Singapore", "Hong Kong", "Belgium",)
 
 
-    set1.configure(font=("Arial", 25))
-    set1.grid(row = 1, column = 0)
+        set1.configure(font=("Arial", 25))
+        set1.grid(row = 1, column = 0)
 
 
-    tkr.mainloop()
-    country_import = clicked.get()
-    print(country_import)
+        tkr.mainloop()
+        country_import = clicked.get()
+        print(country_import)
 
-    country_code_values = 0
-    if(country_import == "Canada"):
-        country_code_values = 1220
+        country_code_values = 0
+        if(country_import == "Canada"):
+            country_code_values = 1220
     
-    elif(country_import == "Mexico"):
-        country_code_values = 2010
+        elif(country_import == "Mexico"):
+             country_code_values = 2010
     
-    elif(country_import == "Japan"):
-        country_code_values = 5880
+        elif(country_import == "Japan"):
+            country_code_values = 5880
     
-    elif(country_import == "Germany"):
-        country_code_values = 4280
+        elif(country_import == "Germany"):
+            country_code_values = 4280
     
-    elif(country_import == "China"):
-        country_code_values = 5700
-    print(type(country_code_values))
-    country_imports(country_code_values)
+        elif(country_import == "China"):
+            country_code_values = 5700
+        
+        elif(country_import == "South Korea"):
+            country_code_values = 5800
+        elif(country_import == "India"):
+            country_code_values = 5330
+        elif(country_import == "United Kingdom"):
+            country_code_values = 4120
+        elif(country_import == "France"):
+            country_code_values = 4272
+        elif(country_import == "Italy"):
+            country_code_values = 4759
+        elif(country_import == "Taiwan"):
+            country_code_values = 5830
+        elif(country_import == "Brazil"):
+            country_code_values = 3510
+        elif(country_import == "Netherlands"):
+            country_code_values = 4210
+        elif(country_import == "Switzerland"):
+            country_code_values = 4419
+        elif(country_import == "Ireland"):
+            country_code_values = 4190
+        elif(country_import == "Vietnam"):
+            country_code_values = 5520
+        elif(country_import == "Malaysia"):
+            country_code_values = 5570
+        elif(country_import == "Singapore"):
+            country_code_values = 5590
+        elif(country_import == "Hong Kong"):
+            country_code_values = 5590
+        elif(country_import == "Belgium"):
+            country_code_values = 4231
+        print(type(country_code_values))
+        country_imports(country_code_values)
+    else:
+        print("Wrong input. Type either P for product or C for country")
+        main()
 main()
